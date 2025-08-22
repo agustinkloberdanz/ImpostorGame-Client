@@ -1,0 +1,30 @@
+<ion-content [fullscreen]="true">
+  <div class="container">
+
+    <ion-item class="item" color="none">
+      <ion-label>Players quantity:</ion-label>
+      <ion-input [(ngModel)]="playersQuantity" type="number"></ion-input>
+    </ion-item>
+
+    <ion-button class="button" (click)="startGame()" shape="round">
+      Start new game
+    </ion-button>
+
+    @if(players[0] != null) {
+
+    <ion-list color="none">
+      @for(id of players;track id) {
+
+      <ion-item class="link" color="none">
+        <ion-label>{{id}}</ion-label>
+        <ion-button (click)="copyLink(id)">
+          <ion-icon slot="icon-only" name="clipboard-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+      }
+    </ion-list>
+
+    }
+
+  </div>
+</ion-content>
