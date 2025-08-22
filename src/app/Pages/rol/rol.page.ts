@@ -9,7 +9,6 @@ import { GameService } from 'src/app/Services/game-service';
   standalone: false
 })
 export class RolPage {
-  roles: string[] = [];
   playerIndex: number;
   playerRole: string;
 
@@ -22,10 +21,7 @@ export class RolPage {
     this._gameService.GetRoles().subscribe(
       (res: any) => {
         if (res.statusCode != 200) alert(res.message)
-        else {
-          this.roles = res.roles;
-          this.playerRole = this.roles[this.playerIndex];
-        }
+        else this.playerRole = res.roles[this.playerIndex - 1]
       },
       (err: any) => {
         console.log(err.message)
