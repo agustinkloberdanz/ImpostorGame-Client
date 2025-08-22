@@ -21,7 +21,7 @@ export class RolPage {
   ionViewWillEnter() {
     this._gameService.GetRoles().subscribe(
       (res: any) => {
-        if (res.statudCode != 200) alert(res.message)
+        if (res.statusCode != 200) alert(res.message)
         else {
           this.roles = res.roles;
           this.playerRole = this.roles[this.playerIndex];
@@ -31,5 +31,4 @@ export class RolPage {
         console.log(err.message)
       });
   }
-
 }
