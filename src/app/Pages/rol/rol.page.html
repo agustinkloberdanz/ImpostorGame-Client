@@ -1,5 +1,9 @@
 <ion-content [fullscreen]="true">
   <div class="container">
+    <ion-button (click)="reload()" expand="block" fill="clear" shape="round">
+      reload <ion-icon slot="icon-only" name="reload"></ion-icon> 
+    </ion-button>
+
     <ion-title>{{playerRole}}</ion-title>
   </div>
 </ion-content>
