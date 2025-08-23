@@ -29,6 +29,7 @@ export class HostPage {
         (res: any) => {
           if (res.statusCode != 200) alert(res.message)
           else {
+            this.players = []
             this._toast.create({
               message: "Game started successfully!",
               duration: 2000,
