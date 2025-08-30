@@ -16,38 +16,38 @@ export class HostPage {
   playersQuantity: number = 0
   players: string[] = []
 
-  startGame() {
+  async startGame() {
     if (this.playersQuantity <= 0) {
       this.alertTools.presentToast('ERROR - Invalid players quantity', 2000);
     }
 
     else {
-      this.alertTools.presentLoading('Starting game...');
+      await this.alertTools.presentLoading('Starting game...');
       this._gameService.StartGame(this.playersQuantity).subscribe(
-        (res: any) => {
+        async (res: any) => {
           if (res.statusCode != 200) alert(res.message)
           else {
             this.players = []
 
-            this.alertTools.presentToast('Game started successfully!', 2000)
+            await this.alertTools.presentToast('Game started successfully!', 2000)
 
             for (let i = 0; i < this.playersQuantity; i++) {
               this.players.push(`${i + 1}`)
             }
           }
-          this.alertTools.dismissLoading();
+          await this.alertTools.dismissLoading();
         },
-        (error: any) => {
+        async (error: any) => {
           console.log(error.message)
-          this.alertTools.dismissLoading();
+          await this.alertTools.dismissLoading();
         }
       )
     }
   }
 
-  copyLink(id: string) {
-    navigator.clipboard.writeText(`https://impostor-game-alpha.vercel.app/rol/${id}`);
+  async copyLink(id: string) {
+    await navigator.clipboard.writeText(`https://impostor-game-alpha.vercel.app/rol/${id}`);
 
-    this.alertTools.presentToast('Link copied to clipboard', 2000);
+    await this.alertTools.presentToast('Link copied to clipboard', 2000);
   }
 }

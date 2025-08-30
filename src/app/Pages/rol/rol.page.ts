@@ -18,23 +18,23 @@ export class RolPage {
     this.playerRole = ''
   }
 
-  ionViewWillEnter() {
-    this.alertTools.presentLoading('Obteniendo jugador');
+  async ionViewWillEnter() {
+    await this.alertTools.presentLoading('Obteniendo jugador');
     this._gameService.GetRoles().subscribe(
-      (res: any) => {
+      async (res: any) => {
         if (res.statusCode != 200) alert(res.message)
         else this.playerRole = res.roles[this.playerIndex - 1]
 
-        this.alertTools.presentToast('Player updated', 2000);
-        this.alertTools.dismissLoading();
+        await this.alertTools.presentToast('Player updated', 2000);
+        await this.alertTools.dismissLoading();
       },
-      (err: any) => {
+      async (err: any) => {
         console.log(err.message)
-        this.alertTools.dismissLoading();
+        await this.alertTools.dismissLoading();
       });
   }
 
-  reload() {
-    this.ionViewWillEnter();
+  async reload() {
+    await this.ionViewWillEnter();
   }
 }
