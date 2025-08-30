@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { GameService } from 'src/app/Services/game-service';
+import { AlertTools } from 'src/app/Tools/AlertTools';
 
 @Component({
   selector: 'app-host',
@@ -10,39 +11,35 @@ import { GameService } from 'src/app/Services/game-service';
 })
 export class HostPage {
 
-  constructor(private _gameService: GameService, private _toast: ToastController) { }
+  constructor(private _gameService: GameService, private _toast: ToastController, private alertTools: AlertTools) { }
 
   playersQuantity: number = 0
   players: string[] = []
 
   startGame() {
     if (this.playersQuantity <= 0) {
-      this._toast.create({
-        message: "ERROR - Invalid players quantity",
-        duration: 2000,
-        position: 'bottom'
-      }).then(toast => toast.present());
+      this.alertTools.presentToast('ERROR - Invalid players quantity', 2000);
     }
 
     else {
+      this.alertTools.presentLoading('Starting game...');
       this._gameService.StartGame(this.playersQuantity).subscribe(
         (res: any) => {
           if (res.statusCode != 200) alert(res.message)
           else {
             this.players = []
-            this._toast.create({
-              message: "Game started successfully!",
-              duration: 2000,
-              position: 'bottom'
-            }).then(toast => toast.present());
+
+            this.alertTools.presentToast('Game started successfully!', 2000)
 
             for (let i = 0; i < this.playersQuantity; i++) {
               this.players.push(`${i + 1}`)
             }
           }
+          this.alertTools.dismissLoading();
         },
         (error: any) => {
           console.log(error.message)
+          this.alertTools.dismissLoading();
         }
       )
     }
@@ -51,10 +48,6 @@ export class HostPage {
   copyLink(id: string) {
     navigator.clipboard.writeText(`https://impostor-game-alpha.vercel.app/rol/${id}`);
 
-    this._toast.create({
-      message: "Link copied to clipboard",
-      duration: 2000,
-      position: 'bottom'
-    }).then(toast => toast.present());
+    this.alertTools.presentToast('Link copied to clipboard', 2000);
   }
 }
