@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ToastController } from '@ionic/angular';
 import { GameService } from 'src/app/Services/game-service';
 import { AlertTools } from 'src/app/Tools/AlertTools';
 
@@ -11,10 +10,32 @@ import { AlertTools } from 'src/app/Tools/AlertTools';
 })
 export class HostPage {
 
-  constructor(private _gameService: GameService, private _toast: ToastController, private alertTools: AlertTools) { }
+  constructor(private _gameService: GameService, private alertTools: AlertTools) { }
 
   playersQuantity: number = 0
   players: string[] = []
+
+  async ionViewWillEnter() {
+    await this.alertTools.presentLoading()
+    this._gameService.GetRoles().subscribe(
+      async (res: any) => {
+        if (res.statusCode != 200) await this.alertTools.presentToast('Error al obtener la partida', 2000)
+        else {
+          const num = res.roles.length
+
+          for (let i = 0; i < num; i++) {
+            this.players.push(`${i + 1}`)
+          }
+        }
+
+        await this.alertTools.dismissLoading()
+      },
+      async (error: any) => {
+        console.log(error.message)
+        await this.alertTools.dismissLoading();
+      }
+    )
+  }
 
   async startGame() {
     if (this.playersQuantity <= 0) {
